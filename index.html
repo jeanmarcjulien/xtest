@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Get IPv4 Address and Geolocation</title>
+</head>
 <body>
+    <h1>IPv4 Address: <span id="ipv4Address"></span></h1>
+    <h1>Latitude: <span id="latitude"></span></h1>
+    <h1>Longitude: <span id="longitude"></span></h1>
 
-<p>Click the button to get your coordinates. 1</p>
+    <script>
+        // Function to get the IPv4 address of the device
+        async function getIPv4Address() {
+            const response = await fetch('https://ipv4.icanhazip.com');
+            const data = await response.text();
+            document.getElementById('ipv4Address').textContent = data.trim();
+        }
 
-<button onclick="getLocation()">Try It</button>
+        // Function to get the geolocation of the device
+        function getGeolocation() {
+            if ('geolocation' in navigator) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById('latitude').textContent = position.coords.latitude;
+                    document.getElementById('longitude').textContent = position.coords.longitude;
+                });
+            } else {
+                alert('Geolocation is not supported in this browser.');
+            }
+        }
 
-<p id="demo"></p>
-
-<script>
-var x = document.getElementById("demo");
-
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
-
-function showPosition(position) {
-  x.innerHTML = "Latitude: " + position.coords.latitude + 
-  "<br>Longitude: " + position.coords.longitude;
-}
-</script>
-
+        // Call the functions
+        getIPv4Address();
+        getGeolocation();
+    </script>
 </body>
 </html>
